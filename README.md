@@ -10,4 +10,4 @@ This projects starts with Exploratory Data Analysis: checking for duplicates, ze
 
 After exploring the data, three machine learning algorithms were selected with the goal to mimimize the Mean Sqaured Error (MSE): 1) Linear Regression 2) Random Forest 3) Gradient Boosting 
 
-The models were created, hyperparameter tuning was done, and cross validtion was done in order to select the model with the lowest MSE
+The models were created, with hyperparameter tuning, and cross validation in order to select the model with the lowest MSE

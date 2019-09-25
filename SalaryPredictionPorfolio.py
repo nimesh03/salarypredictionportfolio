@@ -426,14 +426,6 @@ test_features_df = one_hot_encoding(test_features_df, cat_vars=column_cat, num_v
 #train_salaries_df = clean_train['salary']
 
 
-# In[96]:
-
-
-for column in joined_df.columns:
-    if joined_df[column].dtype.name == 'category':
-        encode(joined_df,column)
-
-
 # In[118]:
 
 

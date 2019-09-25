@@ -3,13 +3,11 @@
 
 # # Salary Predictions Based on Job Descriptions
 
-# # Part 1 - DEFINE
+# The problem we are trying to solve is to predict job salaries for a set of new job postings, based on a trained model that uses current job posting and salary features.
 
-# ### ---- 1 Define the problem ----
+# #### Loading the libraries and packages
 
-# The problem we are trying to solve is to predict job salaries for a set of new job postings, based on a trained model that uses current job posting and salary information.
-
-# In[120]:
+# In[3]:
 
 
 #my info
@@ -34,6 +32,8 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.preprocessing import StandardScaler
 
+
+# #### Defining the functions 
 
 # In[57]:
 
@@ -148,6 +148,8 @@ def saveResults(model, mean_mse, predictions, feature_importances):
     np.savetxt('predictions.csv', predictions, delimiter=',')
 
 
+# #### Initializing input data and variables 
+
 # In[64]:
 
 
@@ -169,11 +171,7 @@ test_features_df = loadFile(test_features)
 train_salaries_df = loadFile(train_salaries)
 
 
-# ## Part 2 - DISCOVER
-
-# ### ---- 2 Load the data ----
-
-# ### ---- 3 Clean the data ----
+# #### Exploratory Data Analysis (EDA)
 
 # In[65]:
 
@@ -261,14 +259,6 @@ print('(Test)Miles from Metropolis that are zero: ' + str(sum(test_features_df.m
 print()
 
 
-# ### ---- 4 Explore the data (EDA) ----
-
-# In[ ]:
-
-
-
-
-
 # In[75]:
 
 
@@ -338,6 +328,8 @@ print("The lower bound for the suspected outliers is " + str(lower))
 joined_df[joined_df.salary < 8.5]
 
 
+# We can see that the salaries for these jobs are not supposed to be 0, therefore we can drop these entities 
+
 # In[84]:
 
 
@@ -359,12 +351,7 @@ joined_df[(joined_df.salary > 222.5) & (joined_df.jobType == 'JUNIOR')]
 joined_df = joined_df[joined_df.salary > 8.5]
 
 
-# In[87]:
-
-
-#looking for correlation between each feature and the target variable
-#look for correlation between features
-
+# Looking for correlation between each feature and the target variable (salary)
 
 # In[88]:
 
@@ -380,11 +367,15 @@ plot_feat(joined_df, 'companyId')
 plot_feat(joined_df, 'jobType')
 
 
+# Job type does affect salary, higher level positions = higher salary
+
 # In[90]:
 
 
 plot_feat(joined_df, 'degree')
 
+
+# Degree affects salary, the more educated someone is, the more likely that they are paid more
 
 # In[91]:
 
@@ -392,11 +383,15 @@ plot_feat(joined_df, 'degree')
 plot_feat(joined_df, 'major')
 
 
+# Depending on which major a person studied the salary can vary
+
 # In[92]:
 
 
 plot_feat(joined_df, 'industry')
 
+
+# Industry has a clear effect on salary, some industries pay more than others
 
 # In[93]:
 
@@ -404,11 +399,17 @@ plot_feat(joined_df, 'industry')
 plot_feat(joined_df, 'yearsExperience')
 
 
+# Years of experience is directed correlated with salary, more years of experience = higher salary
+
 # In[94]:
 
 
 plot_feat(joined_df, 'milesFromMetropolis')
 
+
+# Miles from Metropolis is inversely related to salary, the further the person is from Metropolis, the lower the salary
+
+# Encoding Data before training the models
 
 # In[116]:
 
@@ -445,18 +446,15 @@ plt.xticks(rotation=45)
 plt.show()
 
 
-# ### ---- 5 Establish a baseline ----
+# We can clearly see the correlations between each feature using the heat map
 
 # In[5]:
 
 
-#select a reasonable metric (MSE in this case)
-#create an extremely simple model and measure its efficacy
-#e.g. use "average salary" for each industry as your model and then measure MSE
-#during 5-fold cross-validation
+#select MSE in this case
 
 
-# In[123]:
+# In[1]:
 
 
 
@@ -471,6 +469,16 @@ par_processes = 2
 
 #shared model parameters
 verbose_lvl = 5 
+
+
+# Chose 3 feasible models: Linear Regression, Random Forest and Gradient Boosting
+# 
+# Models are created, tuned and validated using cross validation
+# 
+# Mean Squared Error (MSE) is calculated for each model, with the goal to find the minimum MSE
+
+# In[4]:
+
 
 #create models - hyperparameter tuning done for each model
 lin = LinearRegression()
@@ -495,6 +503,10 @@ model.fit(feat_df, tar_df)
 #prediction based on test data set
 predictions = model.predict(test_df)
 
+
+# In[ ]:
+
+
 #finding feature importances for each model and storing them
 if hasattr(model, 'feature_importances_'):
     importance = model.feature_importances_
@@ -510,113 +522,4 @@ feature_importance.set_index('feature', inplace=True, drop=True)
 
 #save results
 saveResults(model, mean_mse[model], predictions, feature_importances)
-
-
-# In[ ]:
-
-
-
-
-
-# ### ---- 6 Hypothesize solution ----
-
-# In[ ]:
-
-
-#brainstorm 3 models that you think may improve results over the baseline model based
-#on your 
-
-
-# Brainstorm 3 models that you think may improve results over the baseline model based on your EDA and explain why they're reasonable solutions here.
-# 
-# Also write down any new features that you think you should try adding to the model based on your EDA, e.g. interaction variables, summary statistics for each group, etc
-
-# ## Part 3 - DEVELOP
-
-# You will cycle through creating features, tuning models, and training/validing models (steps 7-9) until you've reached your efficacy goal
-# 
-# #### Your metric will be MSE and your goal is:
-#  - <360 for entry-level data science roles
-#  - <320 for senior data science roles
-
-# ### ---- 7 Engineer features  ----
-
-# In[ ]:
-
-
-#make sure that data is ready for modeling
-#create any new features needed to potentially enhance model
-
-
-# ### ---- 8 Create models ----
-
-# In[15]:
-
-
-#create and tune the models that you brainstormed during part 2
-
-
-# ### ---- 9 Test models ----
-
-# In[1]:
-
-
-#do 5-fold cross validation on models and measure MSE
-
-
-# ### ---- 10 Select best model  ----
-
-# In[ ]:
-
-
-#select the model with the lowest error as your "prodcuction" model
-
-
-# ## Part 4 - DEPLOY
-
-# ### ---- 11 Automate pipeline ----
-
-# In[ ]:
-
-
-#write script that trains model on entire training set, saves model to disk,
-#and scores the "test" dataset
-
-
-# ### ---- 12 Deploy solution ----
-
-# In[16]:
-
-
-#save your prediction to a csv file or optionally save them as a table in a SQL database
-#additionally, you want to save a visualization and summary of your prediction and feature importances
-#these visualizations and summaries will be extremely useful to business stakeholders
-
-
-# ### ---- 13 Measure efficacy ----
-
-# We'll skip this step since we don't have the outcomes for the test data
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 

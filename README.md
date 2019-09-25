@@ -1,7 +1,7 @@
 # salarypredictionportfolio
 Salary Prediction Portfolio Project (Python)
 
-This project resolves a simple business problem related to HR. The goal is to use Machine Learning models to predict the salary of a worker based various job features. 
+This project resolves a simple business problem related to HR. The goal is to use Machine Learning models to predict the salary of a worker based on various job features. 
 
 Job Features include: 'companyId', 'jobType', 'degree', 'major', 'industry', 'yearsExperience', and 'milesFromMetropolis'
 The target variable is: 'salary' 
